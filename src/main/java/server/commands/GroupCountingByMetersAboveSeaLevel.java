@@ -18,7 +18,7 @@ public class GroupCountingByMetersAboveSeaLevel extends Command implements Seria
     /**
      * Поле, использующееся для временного хранения коллекции.
      */
-    private final PriorityQueue<City> dop = new PriorityQueue<>(10, (c1, c2) -> {
+    private transient final PriorityQueue<City> dop = new PriorityQueue<>(10, (c1, c2) -> {
         if (c2.getMetersAboveSeaLevel() != null && c1.getMetersAboveSeaLevel() != null) {
             return c1.getMetersAboveSeaLevel().compareTo(c2.getMetersAboveSeaLevel());
         } else if (c2.getMetersAboveSeaLevel() == null && c1.getMetersAboveSeaLevel() != null) {

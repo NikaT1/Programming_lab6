@@ -17,7 +17,7 @@ public class CommandSave extends Command implements Serializable {
     /**
      * Поле, использующееся для временного хранения коллекции.
      */
-    private final PriorityQueue<City> dop = new PriorityQueue<>(10, (c1, c2) -> (c2.getArea() - c1.getArea()));
+    private transient final PriorityQueue<City> dop = new PriorityQueue<>(10, (c1, c2) -> (c2.getArea() - c1.getArea()));
 
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.

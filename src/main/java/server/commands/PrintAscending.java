@@ -17,7 +17,7 @@ public class PrintAscending extends Command implements Serializable {
     /**
      * Поле, использующееся для временного хранения коллекции.
      */
-    private final PriorityQueue<City> dop = new PriorityQueue<>(10, Comparator.comparingInt(City::getArea));
+    private transient final PriorityQueue<City> dop = new PriorityQueue<>(10, Comparator.comparingInt(City::getArea));
 
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.

@@ -11,7 +11,7 @@ import java.io.Serializable;
  * Абстрактный класс для всех команд.
  */
 
-public abstract class Command implements Serializable {
+public abstract class Command {
     /**
      * Дополнительная информация о команде.
      */

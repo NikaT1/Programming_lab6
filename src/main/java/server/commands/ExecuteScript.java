@@ -21,7 +21,7 @@ public class ExecuteScript extends Command implements Serializable {
     /**
      * Поле, содержащее список файлов.
      */
-    private final HashSet<String> paths;
+    private transient final HashSet<String> paths;
 
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
