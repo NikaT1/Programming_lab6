@@ -33,38 +33,34 @@ public class CommandSave extends Command implements Serializable {
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      */
-    public byte[] doCommand(InputAndOutput inputAndOutput, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
-        try {
-            PrintWriter printWriter = new PrintWriter(priorityQueue.getFilePath());
-            printWriter.write("id,name,x,y,creationDate,area,population,metersAboveSeaLevel,establishmentDate,agglomeration,climate,age" + "\n");
-            while (!priorityQueue.getCollection().isEmpty()) {
-                City city = priorityQueue.pollFromQueue();
-                printWriter.write(city.getId() + ",");
-                printWriter.write(city.getName() + ",");
-                printWriter.write(city.getCoordinates().getX() + ",");
-                printWriter.write(city.getCoordinates().getY() + ",");
-                printWriter.write(city.getCreationDate() + ",");
-                printWriter.write(city.getArea() + ",");
-                printWriter.write(city.getPopulation() + ",");
-                if (city.getMetersAboveSeaLevel() == null) printWriter.write(",");
-                else printWriter.write(city.getMetersAboveSeaLevel() + ",");
-                if (city.getEstablishmentDate() == null) printWriter.write(",");
-                else printWriter.write(city.getEstablishmentDate() + ",");
-                if (city.getAgglomeration() == null) printWriter.write(",");
-                else printWriter.write(city.getAgglomeration() + ",");
-                printWriter.write(city.getClimate() + ",");
-                if (city.getGovernor().getAge() == null) printWriter.write(",");
-                else printWriter.write(city.getGovernor().getAge() + "");
-                printWriter.write("\n");
-                dop.add(city);
-            }
-            printWriter.flush();
-            while (!dop.isEmpty()) {
-                priorityQueue.addToCollection(dop.poll());
-            }
-            inputAndOutput.output("Коллекция успешно сохранена");
-        } catch (FileNotFoundException e) {
-            inputAndOutput.output("Не хватает прав на запись в файл");
+    public byte[] doCommand(InputAndOutput inputAndOutput, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) throws FileNotFoundException {
+
+        PrintWriter printWriter = new PrintWriter(priorityQueue.getFilePath());
+        printWriter.write("id,name,x,y,creationDate,area,population,metersAboveSeaLevel,establishmentDate,agglomeration,climate,age" + "\n");
+        while (!priorityQueue.getCollection().isEmpty()) {
+            City city = priorityQueue.pollFromQueue();
+            printWriter.write(city.getId() + ",");
+            printWriter.write(city.getName() + ",");
+            printWriter.write(city.getCoordinates().getX() + ",");
+            printWriter.write(city.getCoordinates().getY() + ",");
+            printWriter.write(city.getCreationDate() + ",");
+            printWriter.write(city.getArea() + ",");
+            printWriter.write(city.getPopulation() + ",");
+            if (city.getMetersAboveSeaLevel() == null) printWriter.write(",");
+            else printWriter.write(city.getMetersAboveSeaLevel() + ",");
+            if (city.getEstablishmentDate() == null) printWriter.write(",");
+            else printWriter.write(city.getEstablishmentDate() + ",");
+            if (city.getAgglomeration() == null) printWriter.write(",");
+            else printWriter.write(city.getAgglomeration() + ",");
+            printWriter.write(city.getClimate() + ",");
+            if (city.getGovernor().getAge() == null) printWriter.write(",");
+            else printWriter.write(city.getGovernor().getAge() + "");
+            printWriter.write("\n");
+            dop.add(city);
+        }
+        printWriter.flush();
+        while (!dop.isEmpty()) {
+            priorityQueue.addToCollection(dop.poll());
         }
         return null;
     }

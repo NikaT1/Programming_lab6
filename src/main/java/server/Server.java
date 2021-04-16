@@ -88,7 +88,7 @@ public class Server {
                 this.execute();
             }
         } catch (SocketException e) {
-            inputAndOutput.output("Что-то с подключением");
+            inputAndOutput.output("Возникли проблемы с подключением");
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();

@@ -2,6 +2,7 @@ package server.commands;
 
 
 import collection.InputAndOutput;
+import collection.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 
 import java.io.Serializable;
@@ -26,7 +27,12 @@ public class CommandExit extends Command implements Serializable {
      * @param priorityQueue   хранимая коллекция.
      */
     public byte[] doCommand(InputAndOutput inputAndOutput, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
-        System.exit(0);
-        return null;
+        String result = "Коллекция сохранена в файл, работа приложения завершается";
+        try {
+            commandsControl.getCommands().get("save").doCommand(inputAndOutput,commandsControl,priorityQueue);
+        } catch (Exception e) {
+            result = "Возникла ошибка при сохранении коллекции";
+        }
+        return Serialization.serializeData(result);
     }
 }

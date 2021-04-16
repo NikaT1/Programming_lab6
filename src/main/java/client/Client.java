@@ -84,6 +84,13 @@ public class Client {
                     bytes = buffer.array();
                     String outputForUser = (String) serialization.deserializeData(bytes);
                     inputAndOutput.output(outputForUser);
+                    if (outputForUser.equals("Коллекция сохранена в файл, работа приложения завершается")) {
+                        System.exit(1);
+                    }
+                    if (outputForUser.equals("Возникла ошибка при сохранении коллекции")) {
+                        if (inputAndOutput.readAnswer("Хотите выйти без сохранения коллекции?")) System.exit(1);
+                        else inputAndOutput.output("Выход не выполнен");
+                    }
                 }
                 if (key.isWritable()) {
                     datagramChannel.register(selector, SelectionKey.OP_READ);
@@ -91,15 +98,20 @@ public class Client {
                     Command currentCommand;
                     try {
                         if (commandsControl.getCommands().containsKey(s[0])) {
-                            currentCommand = commandsControl.getCommands().get(s[0]);
-                            if (currentCommand.getAmountOfArguments() > 0) {
-                                currentCommand.setArgument(s[1]);
+                            if (s[0].equals("save")) {
+                                inputAndOutput.output("Данная команда недоступна, повторите ввод");
+                                datagramChannel.register(selector, SelectionKey.OP_WRITE);
+                            } else {
+                                currentCommand = commandsControl.getCommands().get(s[0]);
+                                if (currentCommand.getAmountOfArguments() > 0) {
+                                    currentCommand.setArgument(s[1]);
+                                }
+                                if (currentCommand.isNeedCity()) {
+                                    currentCommand.setCity(userInput.readCity());
+                                }
+                                ByteBuffer buffer = ByteBuffer.wrap(serialization.serializeData(currentCommand));
+                                datagramChannel.send(buffer, socketAddress);
                             }
-                            if (currentCommand.isNeedCity()) {
-                                currentCommand.setCity(userInput.readCity());
-                            }
-                            ByteBuffer buffer = ByteBuffer.wrap(serialization.serializeData(currentCommand));
-                            datagramChannel.send(buffer, socketAddress);
                         } else {
                             inputAndOutput.output("Данной команды не существет, повторите ввод");
                             datagramChannel.register(selector, SelectionKey.OP_WRITE);
