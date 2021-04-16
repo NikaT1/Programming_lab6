@@ -3,15 +3,15 @@ package server.commands;
 
 import collection.City;
 import collection.InputAndOutput;
+import collection.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
-
 import java.io.Serializable;
 
 /**
  * Абстрактный класс для всех команд.
  */
 
-public abstract class Command {
+public abstract class Command implements Serializable{
     /**
      * Дополнительная информация о команде.
      */
@@ -24,6 +24,7 @@ public abstract class Command {
     private String argument;
     private City city;
     private final boolean needCity;
+    private transient final Serialization serialization = new Serialization();
 
     /**
      * Конструктор.
@@ -56,7 +57,9 @@ public abstract class Command {
     public String getName() {
         return name;
     }
-
+    public Serialization getSerialization() {
+        return serialization;
+    }
     /**
      * Метод, возвращающий информацию о команде.
      *

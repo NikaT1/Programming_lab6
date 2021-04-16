@@ -5,13 +5,16 @@ import java.io.*;
 public class Serialization {
     public Object deserializeData(byte[] bytes) {
         try {
-            ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(bytes));
+            ByteArrayInputStream input = new ByteArrayInputStream(bytes);
+            ObjectInputStream objectInputStream = new ObjectInputStream(input);
             return objectInputStream.readObject();
         } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
             return null;
         }
     }
-    public byte[] serializeData(Object object) {
+
+    public static byte[] serializeData(Object object) {
         try {
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(output);

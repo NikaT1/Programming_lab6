@@ -3,10 +3,10 @@ package server.commands;
 
 import collection.City;
 import collection.InputAndOutput;
+import collection.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.util.PriorityQueue;
 
 /**
@@ -14,10 +14,6 @@ import java.util.PriorityQueue;
  */
 
 public class Show extends Command implements Serializable {
-    /**
-     * Поле, использующееся для временного хранения коллекции.
-     */
-    private transient final PriorityQueue<City> dop = new PriorityQueue<>(10, (c1, c2) -> (c2.getArea() - c1.getArea()));
 
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
@@ -34,6 +30,7 @@ public class Show extends Command implements Serializable {
      * @param priorityQueue   хранимая коллекция.
      */
     public byte[] doCommand(InputAndOutput inputAndOutput, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
+        PriorityQueue<City> dop = new PriorityQueue<>(10, (c1, c2) -> (c2.getArea() - c1.getArea()));
         StringBuilder result = new StringBuilder();
         if (priorityQueue.getCollection().isEmpty()) result.append("Коллекция пуста").append('\n');
         while (!priorityQueue.getCollection().isEmpty()) {
@@ -44,6 +41,7 @@ public class Show extends Command implements Serializable {
         while (!dop.isEmpty()) {
             priorityQueue.addToCollection(dop.poll());
         }
-        return result.toString().getBytes(StandardCharsets.UTF_8);
+
+        return Serialization.serializeData(result.toString());
     }
 }

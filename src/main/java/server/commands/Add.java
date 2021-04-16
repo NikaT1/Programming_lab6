@@ -3,10 +3,10 @@ package server.commands;
 
 import collection.City;
 import collection.InputAndOutput;
+import collection.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
 
 /**
@@ -40,6 +40,6 @@ public class Add extends Command implements Serializable {
         } catch (NoSuchElementException e) {
             result.append("В скрипте не указаны значения для создания элемента коллекции. Команда add не выполнена");
         }
-        return result.toString().getBytes(StandardCharsets.UTF_8);
+        return Serialization.serializeData(result.toString());
     }
 }

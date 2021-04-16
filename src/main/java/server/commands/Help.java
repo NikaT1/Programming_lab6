@@ -2,10 +2,10 @@ package server.commands;
 
 
 import collection.InputAndOutput;
+import collection.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Класс для команды help, которая выводит справку по доступным коммандам.
@@ -31,6 +31,6 @@ public class Help extends Command implements Serializable {
         for (Command command : commandsControl.getCommands().values()) {
             result.append(command.toString()).append('\n');
         }
-        return result.toString().getBytes(StandardCharsets.UTF_8);
+        return Serialization.serializeData(result.toString());
     }
 }

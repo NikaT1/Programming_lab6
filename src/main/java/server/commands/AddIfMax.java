@@ -3,10 +3,10 @@ package server.commands;
 
 import collection.City;
 import collection.InputAndOutput;
+import collection.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Класс для команды add_if_max, которая добавляет новый элемент в коллекцию, если его значение превышает значение
@@ -40,6 +40,6 @@ public class AddIfMax extends Command implements Serializable {
             priorityQueue.addToCollection(city);
             result.append("В коллекцию добавлен новый элемент: ").append(city.toString());
         }
-        return result.toString().getBytes(StandardCharsets.UTF_8);
+        return Serialization.serializeData(result.toString());
     }
 }

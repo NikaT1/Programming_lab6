@@ -3,10 +3,10 @@ package server.commands;
 
 import collection.City;
 import collection.InputAndOutput;
+import collection.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Класс для команды average_of_meters_above_sea_level, которая выводит среднее значение поля metersAboveSeaLevel
@@ -41,6 +41,6 @@ public class AverageOfMetersAboveSeaLevel extends Command implements Serializabl
             String numberResult = String.format("%.3f", answer);
             result.append("Среднее значение поля metersAboveSeaLevel для всех элементов коллекции: ").append(numberResult).append("\n");
         }
-        return result.toString().getBytes(StandardCharsets.UTF_8);
+        return Serialization.serializeData(result.toString());
     }
 }

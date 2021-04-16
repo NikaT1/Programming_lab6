@@ -2,10 +2,10 @@ package server.commands;
 
 
 import collection.InputAndOutput;
+import collection.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Класс для команды info, которая выводит в стандартный поток вывода информацию о коллекции.
@@ -29,6 +29,6 @@ public class Info extends Command implements Serializable {
     public byte[] doCommand(InputAndOutput inputAndOutput, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
         String result = "тип: PriorityQueue" + '\n' + "дата инициализации: " + priorityQueue.getCreationDate() + '\n' +
                 "количество элементов: " + priorityQueue.getCollection().size() + '\n';
-        return result.getBytes(StandardCharsets.UTF_8);
+        return Serialization.serializeData(result);
     }
 }

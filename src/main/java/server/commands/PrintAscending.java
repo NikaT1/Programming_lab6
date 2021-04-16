@@ -2,10 +2,10 @@ package server.commands;
 
 import collection.City;
 import collection.InputAndOutput;
+import collection.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -14,11 +14,6 @@ import java.util.PriorityQueue;
  */
 
 public class PrintAscending extends Command implements Serializable {
-    /**
-     * Поле, использующееся для временного хранения коллекции.
-     */
-    private transient final PriorityQueue<City> dop = new PriorityQueue<>(10, Comparator.comparingInt(City::getArea));
-
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
      */
@@ -34,6 +29,7 @@ public class PrintAscending extends Command implements Serializable {
      * @param priorityQueue   хранимая коллекция.
      */
     public byte[] doCommand(InputAndOutput inputAndOutput, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
+        PriorityQueue<City> dop = new PriorityQueue<>(10, Comparator.comparingInt(City::getArea));
         StringBuilder result = new StringBuilder();
         if (priorityQueue.getCollection().isEmpty()) result.append("Коллекция пуста").append('\n');
         while (!priorityQueue.getCollection().isEmpty()) {
@@ -45,6 +41,6 @@ public class PrintAscending extends Command implements Serializable {
             result.append(city.toString()).append('\n');
             priorityQueue.addToCollection(city);
         }
-        return result.toString().getBytes(StandardCharsets.UTF_8);
+        return Serialization.serializeData(result.toString());
     }
 }

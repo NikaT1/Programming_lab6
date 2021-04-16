@@ -2,10 +2,10 @@ package server.commands;
 
 
 import collection.InputAndOutput;
+import collection.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Класс для команды clear, которая очищает коллекцию.
@@ -28,6 +28,6 @@ public class CommandClear extends Command implements Serializable {
      */
     public byte[] doCommand(InputAndOutput inputAndOutput, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
         priorityQueue.getCollection().clear();
-        return "Коллекция успешно очищена".getBytes(StandardCharsets.UTF_8);
+        return Serialization.serializeData("Коллекция успешно очищена");
     }
 }

@@ -2,10 +2,10 @@ package server.commands;
 
 
 import collection.InputAndOutput;
+import collection.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Класс для команды remove_head, которая выводит и удаляет первый элемент из коллекции.
@@ -32,6 +32,6 @@ public class RemoveHead extends Command implements Serializable {
         else {
             result.append(priorityQueue.pollFromQueue().toString()).append("удаление элемента успешно завершено");
         }
-        return result.toString().getBytes(StandardCharsets.UTF_8);
+        return Serialization.serializeData(result.toString());
     }
 }

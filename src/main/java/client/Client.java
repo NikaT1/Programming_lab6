@@ -1,12 +1,11 @@
 package client;
 
-import collection.City;
 import collection.InputAndOutput;
 import collection.Serialization;
 import server.commands.Command;
 import server.commands.CommandsControl;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
@@ -51,7 +50,7 @@ public class Client {
         while (flag) {
             try {
                 client.initialize();
-                client.connect("localhost", 23);
+                client.connect("localhost", 666);
                 client.getInputAndOutput().output("Соединение установлено");
                 flag = false;
                 client.run();

@@ -2,10 +2,10 @@ package server.commands;
 
 import collection.City;
 import collection.InputAndOutput;
+import collection.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -15,11 +15,6 @@ import java.util.PriorityQueue;
  */
 
 public class AddIfMin extends Command implements Serializable {
-    /**
-     * Поле, использующееся для временного хранения коллекции.
-     */
-    private transient final PriorityQueue<City> dop = new PriorityQueue<>(10, Comparator.comparingInt(City::getArea));
-
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
      */
@@ -35,6 +30,7 @@ public class AddIfMin extends Command implements Serializable {
      * @param priorityQueue   хранимая коллекция.
      */
     public byte[] doCommand(InputAndOutput inputAndOutput, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
+        PriorityQueue<City> dop = new PriorityQueue<>(10, Comparator.comparingInt(City::getArea));
         StringBuilder result = new StringBuilder();
         while (!priorityQueue.getCollection().isEmpty()) {
             City city1 = priorityQueue.pollFromQueue();
@@ -53,6 +49,6 @@ public class AddIfMin extends Command implements Serializable {
         while (!dop.isEmpty()) {
             priorityQueue.addToCollection(dop.poll());
         }
-        return result.toString().getBytes(StandardCharsets.UTF_8);
+        return Serialization.serializeData(result.toString());
     }
 }

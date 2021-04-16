@@ -80,8 +80,8 @@ public class Server {
             System.exit(1);
         }
         try {
-            SocketAddress socketAddress = new InetSocketAddress("localhost", 2323);
-            datagramSocket = new DatagramSocket(2323);
+            SocketAddress socketAddress = new InetSocketAddress("localhost", 666);
+            datagramSocket = new DatagramSocket(666);
             inputAndOutput.setDatagramSocket(datagramSocket);
             while (true) {
                 this.receive();
@@ -97,14 +97,14 @@ public class Server {
     public void receive() throws Exception {
         byte[] bytes = new byte[100000];
         DatagramPacket datagramPacket = new DatagramPacket(bytes, 100000);
+        datagramSocket.receive(datagramPacket);
         int port = datagramPacket.getPort();
         InetAddress addr = datagramPacket.getAddress();
-        datagramSocket.receive(datagramPacket);
         Command command = (Command) serialization.deserializeData(bytes);
         System.out.println(command);
-        bytes = command.doCommand(inputAndOutput, commandsControl, priorityQueue);
-        System.out.println(Arrays.toString(bytes));
-        DatagramPacket result = new DatagramPacket(bytes, bytes.length, addr, port);
+        byte[] commandResult = command.doCommand(inputAndOutput, commandsControl, priorityQueue);
+        System.out.println(Arrays.toString(commandResult));
+        DatagramPacket result = new DatagramPacket(commandResult, commandResult.length, addr, port);
         datagramSocket.send(result);
     }
 }
