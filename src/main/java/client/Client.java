@@ -69,8 +69,7 @@ public class Client {
     private void run() throws IOException {
         datagramChannel.register(selector, SelectionKey.OP_WRITE);
         while (true) {
-            int count = selector.select();
-            if (count == 0) {
+            if (selector.select() == 0) {
                 System.exit(0);
             }
             Set selectedKeys = selector.selectedKeys();
@@ -89,15 +88,26 @@ public class Client {
                 if (key.isWritable()) {
                     datagramChannel.register(selector, SelectionKey.OP_READ);
                     String[] s = scanner.nextLine().split(" ");
-                    Command currentCommand = commandsControl.getCommands().get(s[0]);
-                    if (currentCommand.getAmountOfArguments() > 0) {
-                        currentCommand.setArgument(s[1]);
+                    Command currentCommand;
+                    try {
+                        if (commandsControl.getCommands().containsKey(s[0])) {
+                            currentCommand = commandsControl.getCommands().get(s[0]);
+                            if (currentCommand.getAmountOfArguments() > 0) {
+                                currentCommand.setArgument(s[1]);
+                            }
+                            if (currentCommand.isNeedCity()) {
+                                currentCommand.setCity(userInput.readCity());
+                            }
+                            ByteBuffer buffer = ByteBuffer.wrap(serialization.serializeData(currentCommand));
+                            datagramChannel.send(buffer, socketAddress);
+                        } else {
+                            inputAndOutput.output("Данной команды не существет, повторите ввод");
+                            datagramChannel.register(selector, SelectionKey.OP_WRITE);
+                        }
+                    } catch (IndexOutOfBoundsException e){
+                        inputAndOutput.output("Введены не все аргументы команды");
+                        datagramChannel.register(selector, SelectionKey.OP_WRITE);
                     }
-                    if (currentCommand.isNeedCity()) {
-                        currentCommand.setCity(userInput.readCity());
-                    }
-                    ByteBuffer buffer = ByteBuffer.wrap(serialization.serializeData(currentCommand));
-                    datagramChannel.send(buffer, socketAddress);
                 }
                 keyIterator.remove();
             }

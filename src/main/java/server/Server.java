@@ -14,7 +14,6 @@ import java.io.InputStreamReader;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,11 +25,13 @@ public class Server {
     private final CommandsControl commandsControl;
     private final Serialization serialization;
     private PriorityQueueStorage priorityQueue;
+    private IOForClient ioForClient;
 
     public Server() {
         inputAndOutput = new InputAndOutput(new Scanner(System.in), true);
         commandsControl = new CommandsControl();
         serialization = new Serialization();
+        ioForClient = new IOForClient(new Scanner(System.in), true);
     }
 
     public static void main(String[] args) {
@@ -80,11 +81,11 @@ public class Server {
             System.exit(1);
         }
         try {
-            SocketAddress socketAddress = new InetSocketAddress("localhost", 666);
+            new InetSocketAddress("localhost", 666);
             datagramSocket = new DatagramSocket(666);
-            inputAndOutput.setDatagramSocket(datagramSocket);
+            ioForClient.setDatagramSocket(datagramSocket);
             while (true) {
-                this.receive();
+                this.execute();
             }
         } catch (SocketException e) {
             inputAndOutput.output("Что-то с подключением");
@@ -94,17 +95,11 @@ public class Server {
         }
     }
 
-    public void receive() throws Exception {
+    public void execute() throws Exception {
         byte[] bytes = new byte[100000];
-        DatagramPacket datagramPacket = new DatagramPacket(bytes, 100000);
-        datagramSocket.receive(datagramPacket);
-        int port = datagramPacket.getPort();
-        InetAddress addr = datagramPacket.getAddress();
+        bytes = ioForClient.input(bytes);
         Command command = (Command) serialization.deserializeData(bytes);
-        System.out.println(command);
         byte[] commandResult = command.doCommand(inputAndOutput, commandsControl, priorityQueue);
-        System.out.println(Arrays.toString(commandResult));
-        DatagramPacket result = new DatagramPacket(commandResult, commandResult.length, addr, port);
-        datagramSocket.send(result);
+        ioForClient.output(commandResult);
     }
 }
