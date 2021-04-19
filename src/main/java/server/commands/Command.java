@@ -1,9 +1,9 @@
 package server.commands;
 
 
-import collection.City;
-import collection.InputAndOutput;
-import collection.Serialization;
+import sharedClasses.IOForClient;
+import sharedClasses.City;
+import sharedClasses.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 import java.io.Serializable;
 
@@ -42,12 +42,12 @@ public abstract class Command implements Serializable{
     /**
      * Метод, исполняющий команду.
      *
-     * @param inputAndOutput  объект, через который производится ввод/вывод.
+     * @param ioForClient  объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      * @throws Exception в случае ошибки при выполнении команды.
      */
-    public abstract byte[] doCommand(InputAndOutput inputAndOutput, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) throws Exception;
+    public abstract byte[] doCommand(IOForClient ioForClient, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) throws Exception;
 
     /**
      * Метод, возвращающий название команды.

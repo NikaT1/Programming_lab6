@@ -1,23 +1,16 @@
-package server;
+package sharedClasses;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.util.Scanner;
 
-public class IOForClient {
+/**
+ * Класс, осуществляющий ввод/вывод.
+ */
+
+public class InputAndOutput implements IOInterface{
     /**
      * Ввод пользователя.
      */
     private Scanner scanner;
-    private int port;
-    private InetAddress addr;
-
-    private DatagramSocket datagramSocket;
-    /**
-     * Флаг, отвечающий за вид взаимодействия с пользователем.
-     */
     private boolean printMessages;
 
     /**
@@ -26,7 +19,7 @@ public class IOForClient {
      * @param scanner       ввод пользователя
      * @param printMessages флаг, отвечающий за вид взаимодействия с пользователем.
      */
-    public IOForClient(Scanner scanner, boolean printMessages) {
+    public InputAndOutput(Scanner scanner, boolean printMessages) {
         this.scanner = scanner;
         this.printMessages = printMessages;
     }
@@ -40,9 +33,6 @@ public class IOForClient {
         this.printMessages = printMessages;
     }
 
-    public void setDatagramSocket(DatagramSocket datagramSocket) {
-        this.datagramSocket = datagramSocket;
-    }
     /**
      * Метод, возвращающий сканнер.
      *
@@ -84,25 +74,17 @@ public class IOForClient {
             }
         }
     }
-    public byte[] input (byte[] bytes) throws IOException {
-        DatagramPacket datagramPacket = new DatagramPacket(bytes, 100000);
-        datagramSocket.receive(datagramPacket);
-        port = datagramPacket.getPort();
-        addr = datagramPacket.getAddress();
-        return bytes;
-    }
+
     /**
-     * Метод, отвечающий передачу информации пользователю.
+     * Метод, отвечающий за вывод строки на экран.
      *
-     * @param commandResult информация для вывода.
+     * @param s строка для вывода.
      */
-    public void output(byte[] commandResult) throws IOException {
-        DatagramPacket result = new DatagramPacket(commandResult, commandResult.length, addr, port);
-        datagramSocket.send(result);
+    public void output(String s) {
+        System.out.println(s);
     }
 
     public boolean getPrintMessages() {
         return printMessages;
     }
-
 }

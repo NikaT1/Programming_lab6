@@ -1,8 +1,8 @@
 package server.commands;
 
-import collection.City;
-import collection.InputAndOutput;
+import sharedClasses.IOForClient;
 import server.collectionUtils.PriorityQueueStorage;
+import sharedClasses.City;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -29,11 +29,11 @@ public class CommandSave extends Command implements Serializable {
     /**
      * Метод, исполняющий команду.
      *
-     * @param inputAndOutput  объект, через который производится ввод/вывод.
+     * @param ioForClient  объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      */
-    public byte[] doCommand(InputAndOutput inputAndOutput, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) throws FileNotFoundException {
+    public byte[] doCommand(IOForClient ioForClient, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) throws FileNotFoundException {
 
         PrintWriter printWriter = new PrintWriter(priorityQueue.getFilePath());
         printWriter.write("id,name,x,y,creationDate,area,population,metersAboveSeaLevel,establishmentDate,agglomeration,climate,age" + "\n");

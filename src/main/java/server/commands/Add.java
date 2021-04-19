@@ -1,9 +1,9 @@
 package server.commands;
 
 
-import collection.City;
-import collection.InputAndOutput;
-import collection.Serialization;
+import sharedClasses.IOForClient;
+import sharedClasses.City;
+import sharedClasses.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 
 import java.io.Serializable;
@@ -24,11 +24,11 @@ public class Add extends Command implements Serializable {
     /**
      * Метод, исполняющий команду.
      *
-     * @param inputAndOutput  объект, через который производится ввод/вывод.
+     * @param ioForClient  объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      */
-    public byte[] doCommand(InputAndOutput inputAndOutput, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
+    public byte[] doCommand(IOForClient ioForClient, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
         StringBuilder result = new StringBuilder();
         try {
             City city = this.getCity();

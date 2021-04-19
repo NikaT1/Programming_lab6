@@ -1,9 +1,9 @@
 package server.commands;
 
-import collection.City;
-import collection.InputAndOutput;
-import collection.Serialization;
+import sharedClasses.IOForClient;
 import server.collectionUtils.PriorityQueueStorage;
+import sharedClasses.City;
+import sharedClasses.Serialization;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -25,11 +25,11 @@ public class AddIfMin extends Command implements Serializable {
     /**
      * Метод, исполняющий команду.
      *
-     * @param inputAndOutput  объект, через который производится ввод/вывод.
+     * @param ioForClient  объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      */
-    public byte[] doCommand(InputAndOutput inputAndOutput, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
+    public byte[] doCommand(IOForClient ioForClient, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
         PriorityQueue<City> dop = new PriorityQueue<>(10, Comparator.comparingInt(City::getArea));
         StringBuilder result = new StringBuilder();
         while (!priorityQueue.getCollection().isEmpty()) {
@@ -41,7 +41,7 @@ public class AddIfMin extends Command implements Serializable {
             if (city.getArea() < dop.peek().getArea()) {
                 priorityQueue.addToCollection(city);
                 result.append("В коллекцию добавлен новый элемент: ").append(city.toString());
-            } else inputAndOutput.output("В коллекцию не добавлен элемент: " + city.toString());
+            } else result.append("В коллекцию не добавлен элемент: ").append(city.toString());
         } else {
             priorityQueue.addToCollection(city);
             result.append("В коллекцию добавлен новый элемент: ").append(city.toString());

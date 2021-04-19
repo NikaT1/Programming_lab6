@@ -1,9 +1,10 @@
 package client;
 
-import collection.InputAndOutput;
-import collection.Serialization;
+import sharedClasses.InputAndOutput;
+import sharedClasses.Serialization;
 import server.commands.Command;
 import server.commands.CommandsControl;
+import sharedClasses.UserInput;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -12,6 +13,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
+import java.text.ParseException;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
@@ -84,10 +86,10 @@ public class Client {
                     bytes = buffer.array();
                     String outputForUser = (String) serialization.deserializeData(bytes);
                     inputAndOutput.output(outputForUser);
-                    if (outputForUser.equals("Коллекция сохранена в файл, работа приложения завершается")) {
+                    if (outputForUser!=null && outputForUser.equals("Коллекция сохранена в файл, работа приложения завершается")) {
                         System.exit(1);
                     }
-                    if (outputForUser.equals("Возникла ошибка при сохранении коллекции")) {
+                    if (outputForUser!=null && outputForUser.equals("Возникла ошибка при сохранении коллекции")) {
                         if (inputAndOutput.readAnswer("Хотите выйти без сохранения коллекции?")) System.exit(1);
                         else inputAndOutput.output("Выход не выполнен");
                     }
@@ -119,6 +121,8 @@ public class Client {
                     } catch (IndexOutOfBoundsException e){
                         inputAndOutput.output("Введены не все аргументы команды");
                         datagramChannel.register(selector, SelectionKey.OP_WRITE);
+                    } catch(Exception e){
+                        e.printStackTrace();
                     }
                 }
                 keyIterator.remove();

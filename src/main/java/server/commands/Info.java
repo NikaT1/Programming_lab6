@@ -1,8 +1,9 @@
 package server.commands;
 
 
-import collection.InputAndOutput;
-import collection.Serialization;
+import sharedClasses.IOForClient;
+import sharedClasses.InputAndOutput;
+import sharedClasses.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 
 import java.io.Serializable;
@@ -22,12 +23,12 @@ public class Info extends Command implements Serializable {
     /**
      * Метод, исполняющий команду.
      *
-     * @param inputAndOutput  объект, через который производится ввод/вывод.
+     * @param ioForClient  объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      */
-    public byte[] doCommand(InputAndOutput inputAndOutput, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
-        String result = "тип: PriorityQueue" + '\n' + "дата инициализации: " + priorityQueue.getCreationDate() + '\n' +
+    public byte[] doCommand(IOForClient ioForClient, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
+        String result = "тип: " + priorityQueue.getCollection().getClass() + '\n' + "дата инициализации: " + priorityQueue.getCreationDate() + '\n' +
                 "количество элементов: " + priorityQueue.getCollection().size() + '\n';
         return Serialization.serializeData(result);
     }

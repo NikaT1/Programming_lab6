@@ -1,9 +1,9 @@
 package server.commands;
 
 
-import collection.InputAndOutput;
-import collection.Serialization;
+import sharedClasses.IOForClient;
 import server.collectionUtils.PriorityQueueStorage;
+import sharedClasses.Serialization;
 
 import java.io.Serializable;
 
@@ -22,11 +22,11 @@ public class CommandClear extends Command implements Serializable {
     /**
      * Метод, исполняющий команду.
      *
-     * @param inputAndOutput  объект, через который производится ввод/вывод.
+     * @param ioForClient  объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      */
-    public byte[] doCommand(InputAndOutput inputAndOutput, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
+    public byte[] doCommand(IOForClient ioForClient, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
         priorityQueue.getCollection().clear();
         return Serialization.serializeData("Коллекция успешно очищена");
     }

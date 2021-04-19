@@ -1,9 +1,9 @@
 package server.collectionUtils;
 
-import collection.City;
-import collection.Climate;
-import collection.Coordinates;
-import collection.Human;
+import sharedClasses.City;
+import sharedClasses.Climate;
+import sharedClasses.Coordinates;
+import sharedClasses.Human;
 
 import java.io.InputStreamReader;
 import java.text.DateFormat;
@@ -11,7 +11,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Scanner;
 

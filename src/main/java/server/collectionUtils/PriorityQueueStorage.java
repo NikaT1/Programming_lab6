@@ -1,6 +1,6 @@
 package server.collectionUtils;
 
-import collection.City;
+import sharedClasses.City;
 
 import java.time.LocalDate;
 import java.util.Collections;

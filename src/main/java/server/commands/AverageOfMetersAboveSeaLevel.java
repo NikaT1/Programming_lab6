@@ -1,10 +1,10 @@
 package server.commands;
 
 
-import collection.City;
-import collection.InputAndOutput;
-import collection.Serialization;
+import sharedClasses.IOForClient;
 import server.collectionUtils.PriorityQueueStorage;
+import sharedClasses.City;
+import sharedClasses.Serialization;
 
 import java.io.Serializable;
 
@@ -24,22 +24,19 @@ public class AverageOfMetersAboveSeaLevel extends Command implements Serializabl
     /**
      * Метод, исполняющий команду.
      *
-     * @param inputAndOutput  объект, через который производится ввод/вывод.
+     * @param ioForClient  объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      */
-    public byte[] doCommand(InputAndOutput inputAndOutput, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
+    public byte[] doCommand(IOForClient ioForClient, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
         StringBuilder result = new StringBuilder();
         if (priorityQueue.getCollection().isEmpty())
-            result.append("Коллекция пуста; среднее значение поля metersAboveSeaLevel установить невозможно").append('\n');
+            result.append("Коллекция пуста; среднее значение поля metersAboveSeaLevel установить невозможно");
         else {
-            int sum = 0;
-            for (City city : priorityQueue.getCollection()) {
-                sum += city.getMetersAboveSeaLevel();
-            }
-            double answer = sum * 1.0 / priorityQueue.getCollection().size();
+            double answer = priorityQueue.getCollection().stream().filter(city -> city.getMetersAboveSeaLevel() != null)
+                    .mapToLong(City::getMetersAboveSeaLevel).average().getAsDouble();
             String numberResult = String.format("%.3f", answer);
-            result.append("Среднее значение поля metersAboveSeaLevel для всех элементов коллекции: ").append(numberResult).append("\n");
+            result.append("Среднее значение поля metersAboveSeaLevel для всех элементов коллекции: ").append(numberResult);
         }
         return Serialization.serializeData(result.toString());
     }
