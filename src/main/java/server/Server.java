@@ -58,8 +58,6 @@ public class Server {
                 System.exit(-1);
             }
             fileInputStream = new FileInputStream(args[0]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-
         } catch (FileNotFoundException e) {
             log.log(Level.SEVERE, "Файл не существует или не хватает прав на чтение");
             System.exit(-1);
