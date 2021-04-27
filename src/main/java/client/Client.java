@@ -1,6 +1,5 @@
 package client;
 
-import sharedClasses.InputAndOutput;
 import sharedClasses.Serialization;
 import server.commands.Command;
 import server.commands.CommandsControl;
@@ -13,7 +12,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
-import java.text.ParseException;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
@@ -55,6 +53,7 @@ public class Client {
                 client.connect("localhost", 666);
                 client.getInputAndOutput().output("Соединение установлено");
                 flag = false;
+
                 client.run();
             } catch (IOException e) {
                 client.getInputAndOutput().output("Соединение не установлено");
@@ -128,6 +127,5 @@ public class Client {
                 keyIterator.remove();
             }
         }
-
     }
 }

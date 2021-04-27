@@ -1,6 +1,6 @@
 package server.commands;
 
-import sharedClasses.IOForClient;
+import server.IOForClient;
 import server.collectionUtils.PriorityQueueStorage;
 import sharedClasses.City;
 

@@ -1,4 +1,6 @@
-package sharedClasses;
+package client;
+
+import sharedClasses.IOInterface;
 
 import java.util.Scanner;
 
@@ -6,7 +8,7 @@ import java.util.Scanner;
  * Класс, осуществляющий ввод/вывод.
  */
 
-public class InputAndOutput implements IOInterface{
+public class InputAndOutput implements IOInterface {
     /**
      * Ввод пользователя.
      */

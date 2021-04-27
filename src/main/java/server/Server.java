@@ -5,13 +5,9 @@ import server.collectionUtils.PriorityQueueStorage;
 import server.commands.Command;
 import server.commands.CommandsControl;
 import server.commands.ExecuteScript;
-import sharedClasses.IOForClient;
 import sharedClasses.Serialization;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.PortUnreachableException;
@@ -20,6 +16,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.text.ParseException;
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,8 +27,10 @@ public class Server {
     private final Serialization serialization;
     private PriorityQueueStorage priorityQueue;
     private final IOForClient ioForClient;
+    private final Logger log = Logger.getLogger(Server.class.getName());
 
     public Server() {
+        log.log(Level.INFO, "Запуск сервера");
         commandsControl = new CommandsControl();
         serialization = new Serialization();
         ioForClient = new IOForClient(true);
@@ -45,41 +45,51 @@ public class Server {
     public void run() {
         FileInputStream fileInputStream = null;
         try {
+            log.log(Level.INFO, "Проверка допустимости имени файла");
+            if (args.length < 1) {
+                log.log(Level.SEVERE,"Вы не задали имя файла");
+                System.exit(-1);
+            }
             Pattern pattern = Pattern.compile("/dev/*");
-            Matcher matcher = pattern.matcher(args[0]);
+            File file = new File(args[0]);
+            Matcher matcher = pattern.matcher(file.getAbsolutePath());
             if (matcher.find()) {
-                //inputAndOutput.output("Вы задали недопустимое имя файла");
-                System.exit(1);
+                log.log(Level.SEVERE, "Вы задали недопустимое имя файла");
+                System.exit(-1);
             }
             fileInputStream = new FileInputStream(args[0]);
         } catch (ArrayIndexOutOfBoundsException e) {
-            //inputAndOutput.output("Вы не задали имя файла");
-            System.exit(1);
+
         } catch (FileNotFoundException e) {
-            //inputAndOutput.output("Файл не существует или не хватает прав на чтение");
-            System.exit(1);
+            log.log(Level.SEVERE, "Файл не существует или не хватает прав на чтение");
+            System.exit(-1);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Ошибка доступа к файлу");
+            e.printStackTrace();
+            System.exit(-1);
         }
         Parser parser;
         try {
+            log.log(Level.INFO, "Создание коллекции");
             priorityQueue = new PriorityQueueStorage(args[0]);
             parser = new Parser(priorityQueue);
             BufferedInputStream file = new BufferedInputStream(fileInputStream);
             InputStreamReader lines = new InputStreamReader(file, StandardCharsets.UTF_8);
             parser.parseFile(lines);
-            //inputAndOutput.output("Коллекция успешно создана!");
+            log.log(Level.INFO, "Коллекция успешно создана");
         } catch (NumberFormatException e) {
-            //inputAndOutput.output("Значения полей объектов введены неверно");
-            System.exit(1);
+            log.log(Level.SEVERE, "Значения полей объектов введены неверно");
+            System.exit(-1);
         } catch (NullPointerException e) {
-            //inputAndOutput.output("Файл сожержит не все поля, необходимые для создания элементов коллекции");
-            System.exit(1);
+            log.log(Level.SEVERE, "Файл сожержит не все поля, необходимые для создания элементов коллекции");
+            System.exit(-1);
         } catch (ParseException e) {
-            //inputAndOutput.output("Дата в файле введена в неправильном формате");
-            System.exit(1);
+            log.log(Level.SEVERE, "Дата в файле введена в неправильном формате");
+            System.exit(-1);
         } catch (Exception e) {
-            //inputAndOutput.output("Ошибка при чтении из файла");
+            log.log(Level.SEVERE, "Ошибка при чтении из файла");
             e.printStackTrace();
-            System.exit(1);
+            System.exit(-1);
         }
         try {
             new InetSocketAddress("localhost", 666);
@@ -89,11 +99,11 @@ public class Server {
                 this.execute();
             }
         } catch (PortUnreachableException e) {
-            //ioForClient.output("Возникли проблемы с доступом к порту");
+            log.log(Level.SEVERE, "Ошибка с доступом к порту");
         } catch (SocketException e) {
-            //inputAndOutput.output("Возникли проблемы с подключением");
-            e.printStackTrace();
+            log.log(Level.SEVERE, "Ошибка подключения");
         } catch (Exception e) {
+            log.log(Level.SEVERE, "Возникла непредвиденная ошибка");
             e.printStackTrace();
         }
     }
@@ -101,9 +111,12 @@ public class Server {
     public void execute() throws Exception {
         try {
             byte[] bytes = new byte[100000];
+            log.log(Level.INFO, "Чтение команды");
             bytes = ioForClient.input(bytes);
             Command command = (Command) serialization.deserializeData(bytes);
+            log.log(Level.INFO, "Получение результата работы команды");
             byte[] commandResult = command.doCommand(ioForClient, commandsControl, priorityQueue);
+            log.log(Level.INFO, "Отправка клиенту результата работы команды");
             ioForClient.output(commandResult);
         } catch (InvalidAlgorithmParameterException e) {
             ioForClient.output(e.getMessage());

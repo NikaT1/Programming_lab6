@@ -2,8 +2,7 @@ package server.commands;
 
 
 import sharedClasses.City;
-import sharedClasses.IOForClient;
-import sharedClasses.InputAndOutput;
+import server.IOForClient;
 import sharedClasses.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 
