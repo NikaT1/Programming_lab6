@@ -1,16 +1,16 @@
 package server.commands;
 
 import server.IOForClient;
-import sharedClasses.City;
-import sharedClasses.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
+import sharedClasses.City;
+
 import java.io.Serializable;
 
 /**
  * Абстрактный класс для всех команд.
  */
 
-public abstract class Command implements Serializable{
+public abstract class Command implements Serializable {
     /**
      * Дополнительная информация о команде.
      */
@@ -23,7 +23,6 @@ public abstract class Command implements Serializable{
     private String argument;
     private City city;
     private final boolean needCity;
-    private transient final Serialization serialization = new Serialization();
 
     /**
      * Конструктор.
@@ -31,7 +30,7 @@ public abstract class Command implements Serializable{
      * @param name            название команды.
      * @param someInformation дополнительная информация о команде.
      */
-    public Command(String name, String someInformation, int amountOfArguments, boolean needCity ) {
+    public Command(String name, String someInformation, int amountOfArguments, boolean needCity) {
         this.name = name;
         this.someInformation = someInformation;
         this.amountOfArguments = amountOfArguments;
@@ -41,7 +40,7 @@ public abstract class Command implements Serializable{
     /**
      * Метод, исполняющий команду.
      *
-     * @param ioForClient  объект, через который производится ввод/вывод.
+     * @param ioForClient     объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      * @throws Exception в случае ошибки при выполнении команды.
@@ -56,9 +55,7 @@ public abstract class Command implements Serializable{
     public String getName() {
         return name;
     }
-    public Serialization getSerialization() {
-        return serialization;
-    }
+
     /**
      * Метод, возвращающий информацию о команде.
      *

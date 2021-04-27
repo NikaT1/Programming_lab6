@@ -33,9 +33,11 @@ public class IOForClient implements IOInterface {
         this.scanner = scanner;
         this.printMessages = printMessages;
     }
+
     public IOForClient(boolean printMessages) {
         this.printMessages = printMessages;
     }
+
     /**
      * Метод, устанавливающий вид взаимодействия с пользователем.
      *
@@ -48,13 +50,14 @@ public class IOForClient implements IOInterface {
     public void setDatagramSocket(DatagramSocket datagramSocket) {
         this.datagramSocket = datagramSocket;
     }
+
     /**
      * Метод, возвращающий сканнер.
      *
      * @return сканнер.
      */
     public Scanner getScanner() {
-        if (scanner!=null) return scanner;
+        if (scanner != null) return scanner;
         else return null;
     }
 
@@ -90,13 +93,15 @@ public class IOForClient implements IOInterface {
             }
         }
     }
-    public byte[] input (byte[] bytes) throws IOException {
+
+    public byte[] input(byte[] bytes) throws IOException {
         DatagramPacket datagramPacket = new DatagramPacket(bytes, 100000);
         datagramSocket.receive(datagramPacket);
         port = datagramPacket.getPort();
         addr = datagramPacket.getAddress();
         return bytes;
     }
+
     /**
      * Метод, отвечающий передачу информации пользователю.
      *
@@ -106,6 +111,7 @@ public class IOForClient implements IOInterface {
         DatagramPacket result = new DatagramPacket(commandResult, commandResult.length, addr, port);
         datagramSocket.send(result);
     }
+
     public void output(String s) {
         byte[] bytes = Serialization.serializeData(s);
         DatagramPacket result = new DatagramPacket(bytes, bytes.length, addr, port);
@@ -115,6 +121,7 @@ public class IOForClient implements IOInterface {
             e.printStackTrace();
         }
     }
+
     public boolean getPrintMessages() {
         return printMessages;
     }

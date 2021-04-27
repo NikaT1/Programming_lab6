@@ -22,13 +22,13 @@ public class Info extends Command implements Serializable {
     /**
      * Метод, исполняющий команду.
      *
-     * @param ioForClient  объект, через который производится ввод/вывод.
+     * @param ioForClient     объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      */
     public byte[] doCommand(IOForClient ioForClient, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
         String result = "тип: " + priorityQueue.getCollection().getClass() + '\n' + "дата инициализации: " + priorityQueue.getCreationDate() + '\n' +
-                "количество элементов: " + priorityQueue.getCollection().size() + '\n';
+                "количество элементов: " + priorityQueue.getCollection().size();
         return Serialization.serializeData(result);
     }
 }

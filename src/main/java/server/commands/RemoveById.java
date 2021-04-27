@@ -25,7 +25,7 @@ public class RemoveById extends Command implements Serializable {
     /**
      * Метод, исполняющий команду.
      *
-     * @param ioForClient  объект, через который производится ввод/вывод.
+     * @param ioForClient     объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      */
@@ -33,12 +33,11 @@ public class RemoveById extends Command implements Serializable {
         StringBuilder result = new StringBuilder();
         try {
             int id = Integer.parseInt(this.getArgument());
-            List<City> cities = priorityQueue.getCollection().stream().filter(city->city.getId()==id).collect(Collectors.toList());
-            if (cities.size()>0) {
+            List<City> cities = priorityQueue.getCollection().stream().filter(city -> city.getId() == id).collect(Collectors.toList());
+            if (cities.size() > 0) {
                 result.append("удаление элемента успешно завершено");
                 priorityQueue.getCollection().remove(cities.get(0));
-            }
-            else result.append("Элемент с id ").append(id).append(" не существует");
+            } else result.append("Элемент с id ").append(id).append(" не существует");
         } catch (NumberFormatException e) {
             result.append("неправильный формат id");
         }

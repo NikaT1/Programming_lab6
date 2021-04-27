@@ -1,6 +1,5 @@
 package server.commands;
 
-
 import server.IOForClient;
 import server.collectionUtils.PriorityQueueStorage;
 import sharedClasses.Serialization;
@@ -22,7 +21,7 @@ public class CommandClear extends Command implements Serializable {
     /**
      * Метод, исполняющий команду.
      *
-     * @param ioForClient  объект, через который производится ввод/вывод.
+     * @param ioForClient     объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      */

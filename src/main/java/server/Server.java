@@ -8,10 +8,7 @@ import server.commands.ExecuteScript;
 import sharedClasses.Serialization;
 
 import java.io.*;
-import java.net.DatagramSocket;
-import java.net.InetSocketAddress;
-import java.net.PortUnreachableException;
-import java.net.SocketException;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.text.ParseException;
@@ -27,6 +24,7 @@ public class Server {
     private final Serialization serialization;
     private PriorityQueueStorage priorityQueue;
     private final IOForClient ioForClient;
+    private DatagramSocket datagramSocket;
     private final Logger log = Logger.getLogger(Server.class.getName());
 
     public Server() {
@@ -47,7 +45,7 @@ public class Server {
         try {
             log.log(Level.INFO, "Проверка допустимости имени файла");
             if (args.length < 1) {
-                log.log(Level.SEVERE,"Вы не задали имя файла");
+                log.log(Level.SEVERE, "Вы не задали имя файла");
                 System.exit(-1);
             }
             Pattern pattern = Pattern.compile("/dev/*");
@@ -91,7 +89,7 @@ public class Server {
         }
         try {
             new InetSocketAddress("localhost", 666);
-            DatagramSocket datagramSocket = new DatagramSocket(666);
+            datagramSocket = new DatagramSocket(666);
             ioForClient.setDatagramSocket(datagramSocket);
             while (true) {
                 this.execute();
@@ -108,6 +106,7 @@ public class Server {
 
     public void execute() throws Exception {
         try {
+            datagramSocket.setSoTimeout(60000);
             byte[] bytes = new byte[100000];
             log.log(Level.INFO, "Чтение команды");
             bytes = ioForClient.input(bytes);
@@ -122,6 +121,10 @@ public class Server {
             ExecuteScript command = (ExecuteScript) commandsControl.getCommands().get("execute_script");
             command.getPaths().clear();
             ioForClient.output("Неверный формат введенных данных");
+        } catch (SocketTimeoutException e) {
+            commandsControl.getCommands().get("save").doCommand(ioForClient, commandsControl, priorityQueue);
+            log.log(Level.SEVERE, "Время ожидания истекло");
+            System.exit(1);
         }
     }
 }

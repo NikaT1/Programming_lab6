@@ -25,23 +25,22 @@ public class UpdateId extends Command implements Serializable {
     /**
      * Метод, исполняющий команду.
      *
-     * @param ioForClient  объект, через который производится ввод/вывод.
+     * @param ioForClient     объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      */
     public byte[] doCommand(IOForClient ioForClient, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
-       StringBuilder result = new StringBuilder();
+        StringBuilder result = new StringBuilder();
         try {
             int id = Integer.parseInt(getArgument());
-            List<City> cities = priorityQueue.getCollection().stream().filter(city->city.getId()==id).collect(Collectors.toList());
-            if (cities.size()>0) {
+            List<City> cities = priorityQueue.getCollection().stream().filter(city -> city.getId() == id).collect(Collectors.toList());
+            if (cities.size() > 0) {
                 priorityQueue.getCollection().remove(cities.get(0));
                 City city = getCity();
                 city.setId(id);
                 priorityQueue.addToCollection(city);
                 result.append("обновление элемента успешно завершено");
-            }
-            else result.append("Элемент с id ").append(id).append(" не существует");
+            } else result.append("Элемент с id ").append(id).append(" не существует");
         } catch (NumberFormatException e) {
             result.append("неправильный формат id");
         }

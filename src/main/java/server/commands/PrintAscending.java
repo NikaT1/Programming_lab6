@@ -21,15 +21,15 @@ public class PrintAscending extends Command implements Serializable {
     /**
      * Метод, исполняющий команду.
      *
-     * @param ioForClient  объект, через который производится ввод/вывод.
+     * @param ioForClient     объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      */
     public byte[] doCommand(IOForClient ioForClient, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
         StringBuilder result = new StringBuilder();
         if (priorityQueue.getCollection().isEmpty()) result.append("Коллекция пуста").append('\n');
-        else priorityQueue.getCollection().forEach(city->result.append(city.toString()).append('\n'));
-        result.delete(result.length()-1, result.length());
+        else priorityQueue.getCollection().forEach(city -> result.append(city.toString()).append('\n'));
+        result.delete(result.length() - 1, result.length());
         return Serialization.serializeData(result.toString());
     }
 }

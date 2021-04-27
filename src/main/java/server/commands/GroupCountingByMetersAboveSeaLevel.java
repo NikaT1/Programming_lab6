@@ -26,7 +26,7 @@ public class GroupCountingByMetersAboveSeaLevel extends Command implements Seria
     /**
      * Метод, исполняющий команду.
      *
-     * @param ioForClient  объект, через который производится ввод/вывод.
+     * @param ioForClient     объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      */
@@ -34,15 +34,16 @@ public class GroupCountingByMetersAboveSeaLevel extends Command implements Seria
         StringBuilder result = new StringBuilder();
         if (priorityQueue.getCollection().isEmpty()) result.append("Коллекция пуста" + '\n');
         else {
-            Map<Object, List<City>> groups = priorityQueue.getCollection().stream().filter(city->city.getMetersAboveSeaLevel()!=null).collect(Collectors.groupingBy(City::getMetersAboveSeaLevel));
-            groups.forEach((meters,cities)->result.append("Группа ").append(meters).append(" (м):").append('\n').append(print(cities)).append('\n'));
+            Map<Object, List<City>> groups = priorityQueue.getCollection().stream().filter(city -> city.getMetersAboveSeaLevel() != null).collect(Collectors.groupingBy(City::getMetersAboveSeaLevel));
+            groups.forEach((meters, cities) -> result.append("Группа ").append(meters).append(" (м):").append('\n').append(print(cities)).append('\n'));
         }
-        result.delete(result.length()-1, result.length());
+        result.delete(result.length() - 1, result.length());
         return Serialization.serializeData(result.toString());
     }
-    public String print (List<City> cities){
+
+    public String print(List<City> cities) {
         StringBuilder result = new StringBuilder();
-        for (City city: cities) {
+        for (City city : cities) {
             result.append(city.toString()).append('\n');
         }
         return result.toString();

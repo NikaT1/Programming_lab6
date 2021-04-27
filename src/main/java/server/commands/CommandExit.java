@@ -22,14 +22,14 @@ public class CommandExit extends Command implements Serializable {
     /**
      * Метод, исполняющий команду.
      *
-     * @param ioForClient  объект, через который производится ввод/вывод.
+     * @param ioForClient     объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      */
     public byte[] doCommand(IOForClient ioForClient, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
         String result = "Коллекция сохранена в файл, работа приложения завершается";
         try {
-            commandsControl.getCommands().get("save").doCommand(ioForClient,commandsControl,priorityQueue);
+            commandsControl.getCommands().get("save").doCommand(ioForClient, commandsControl, priorityQueue);
         } catch (Exception e) {
             result = "Возникла ошибка при сохранении коллекции";
         }

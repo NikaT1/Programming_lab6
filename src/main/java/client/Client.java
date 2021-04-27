@@ -12,6 +12,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
+import java.text.ParseException;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
@@ -47,13 +48,20 @@ public class Client {
     public static void main(String[] args) {
         Client client = new Client();
         boolean flag = true;
+        client.inputAndOutput.output("Введите адрес сервера:");
         while (flag) {
             try {
+                int addr;
+                try {
+                    addr = Integer.parseInt(client.inputAndOutput.getScanner().nextLine());
+                }catch (NumberFormatException e){
+                    client.inputAndOutput.output("Неверный формат адреса, повторите ввод:");
+                    continue;
+                }
                 client.initialize();
-                client.connect("localhost", 666);
-                client.getInputAndOutput().output("Соединение установлено");
+                client.connect("localhost", addr);
+                client.getInputAndOutput().output("Введите первую команду:");
                 flag = false;
-
                 client.run();
             } catch (IOException e) {
                 client.getInputAndOutput().output("Соединение не установлено");
@@ -67,6 +75,51 @@ public class Client {
         datagramChannel.connect(socketAddress);
     }
 
+    private void sendCommand(String[] s) throws IOException, ParseException {
+        Command currentCommand;
+        if (s.length > 0 && commandsControl.getCommands().containsKey(s[0])) {
+            if (s[0].equals("save")) {
+                inputAndOutput.output("Данная команда недоступна, повторите ввод");
+                datagramChannel.register(selector, SelectionKey.OP_WRITE);
+            } else {
+                currentCommand = commandsControl.getCommands().get(s[0]);
+                if (currentCommand.getAmountOfArguments() > 0) {
+                    currentCommand.setArgument(s[1]);
+                }
+                if (currentCommand.isNeedCity()) {
+                    currentCommand.setCity(userInput.readCity());
+                }
+                byte[] ser = Serialization.serializeData(currentCommand);
+                if (ser != null) {
+                    ByteBuffer buffer = ByteBuffer.wrap(ser);
+                    datagramChannel.send(buffer, socketAddress);
+                }
+            }
+        } else {
+            inputAndOutput.output("Данной команды не существет, повторите ввод");
+            datagramChannel.register(selector, SelectionKey.OP_WRITE);
+        }
+    }
+
+    private void outputAnswer() throws IOException {
+        byte[] bytes = new byte[100000];
+        ByteBuffer buffer = ByteBuffer.wrap(bytes);
+        socketAddress = datagramChannel.receive(buffer);
+        bytes = buffer.array();
+        String outputForUser = (String) serialization.deserializeData(bytes);
+        inputAndOutput.output(outputForUser);
+        if (outputForUser != null && outputForUser.equals("Коллекция сохранена в файл, работа приложения завершается")) {
+            System.exit(1);
+        }
+        if (outputForUser != null && outputForUser.equals("Возникла ошибка при сохранении коллекции")) {
+            if (inputAndOutput.readAnswer("Хотите выйти без сохранения коллекции?")) System.exit(1);
+            else inputAndOutput.output("Выход не выполнен");
+        } else {
+            inputAndOutput.output("Ошибка сериализации команды; команда не выполнена");
+            datagramChannel.register(selector, SelectionKey.OP_WRITE);
+        }
+    }
+
     private void run() throws IOException {
         datagramChannel.register(selector, SelectionKey.OP_WRITE);
         while (true) {
@@ -78,50 +131,21 @@ public class Client {
             while (keyIterator.hasNext()) {
                 SelectionKey key = (SelectionKey) keyIterator.next();
                 if (key.isReadable()) {
-                    byte[] bytes = new byte[100000];
                     datagramChannel.register(selector, SelectionKey.OP_WRITE);
-                    ByteBuffer buffer = ByteBuffer.wrap(bytes);
-                    socketAddress = datagramChannel.receive(buffer);
-                    bytes = buffer.array();
-                    String outputForUser = (String) serialization.deserializeData(bytes);
-                    inputAndOutput.output(outputForUser);
-                    if (outputForUser!=null && outputForUser.equals("Коллекция сохранена в файл, работа приложения завершается")) {
-                        System.exit(1);
-                    }
-                    if (outputForUser!=null && outputForUser.equals("Возникла ошибка при сохранении коллекции")) {
-                        if (inputAndOutput.readAnswer("Хотите выйти без сохранения коллекции?")) System.exit(1);
-                        else inputAndOutput.output("Выход не выполнен");
-                    }
+                    outputAnswer();
                 }
                 if (key.isWritable()) {
                     datagramChannel.register(selector, SelectionKey.OP_READ);
                     String[] s = scanner.nextLine().split(" ");
-                    Command currentCommand;
                     try {
-                        if (commandsControl.getCommands().containsKey(s[0])) {
-                            if (s[0].equals("save")) {
-                                inputAndOutput.output("Данная команда недоступна, повторите ввод");
-                                datagramChannel.register(selector, SelectionKey.OP_WRITE);
-                            } else {
-                                currentCommand = commandsControl.getCommands().get(s[0]);
-                                if (currentCommand.getAmountOfArguments() > 0) {
-                                    currentCommand.setArgument(s[1]);
-                                }
-                                if (currentCommand.isNeedCity()) {
-                                    currentCommand.setCity(userInput.readCity());
-                                }
-                                ByteBuffer buffer = ByteBuffer.wrap(serialization.serializeData(currentCommand));
-                                datagramChannel.send(buffer, socketAddress);
-                            }
-                        } else {
-                            inputAndOutput.output("Данной команды не существет, повторите ввод");
-                            datagramChannel.register(selector, SelectionKey.OP_WRITE);
-                        }
-                    } catch (IndexOutOfBoundsException e){
+                        sendCommand(s);
+                    } catch (IndexOutOfBoundsException e) {
                         inputAndOutput.output("Введены не все аргументы команды");
                         datagramChannel.register(selector, SelectionKey.OP_WRITE);
-                    } catch(Exception e){
+                    } catch (Exception e) {
+                        inputAndOutput.output("Произошла непредвиденная ошибка");
                         e.printStackTrace();
+                        System.exit(-1);
                     }
                 }
                 keyIterator.remove();
