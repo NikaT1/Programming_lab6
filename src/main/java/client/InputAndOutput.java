@@ -64,6 +64,7 @@ public class InputAndOutput implements IOInterface {
         String s;
         System.out.println(message);
         while (true) {
+            if (!scanner.hasNextLine()) System.exit(1);
             s = scanner.nextLine();
             switch (s) {
                 case "yes":

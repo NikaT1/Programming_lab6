@@ -71,29 +71,6 @@ public class IOForClient implements IOInterface {
         this.scanner = scanner;
     }
 
-    /**
-     * Метод, считывающий ответ пользвателя.
-     *
-     * @param message сообщение пользователю.
-     * @return ответ пользователя.
-     */
-    public boolean readAnswer(String message) {
-        String s;
-        System.out.println(message);
-        while (true) {
-            s = scanner.nextLine();
-            switch (s) {
-                case "yes":
-                    return true;
-                case "no":
-                    return false;
-                default:
-                    System.out.println("Неверный ввод! Введите yes/no");
-                    break;
-            }
-        }
-    }
-
     public byte[] input(byte[] bytes) throws IOException {
         DatagramPacket datagramPacket = new DatagramPacket(bytes, 100000);
         datagramSocket.receive(datagramPacket);

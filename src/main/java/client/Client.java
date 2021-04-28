@@ -48,21 +48,22 @@ public class Client {
     public static void main(String[] args) {
         Client client = new Client();
         boolean flag = true;
-        client.inputAndOutput.output("Введите адрес сервера:");
-        int addr;
+        client.inputAndOutput.output("Введите порт:");
+        int addr = 0;
         while (true) {
             try {
-                addr = Integer.parseInt(client.inputAndOutput.getScanner().nextLine());
+                if (client.inputAndOutput.getScanner().hasNextLine()) addr = Integer.parseInt(client.inputAndOutput.getScanner().nextLine());
+                else System.exit(1);
                 break;
             } catch (NumberFormatException e) {
-                client.inputAndOutput.output("Неверный формат адреса, повторите ввод:");
+                client.inputAndOutput.output("Неверный формат порта, повторите ввод:");
             }
         }
         while (flag) {
             try {
                 client.initialize();
                 client.connect("localhost", addr);
-                client.getInputAndOutput().output("Введите первую команду:");
+                client.getInputAndOutput().output("Введите команду:");
                 flag = false;
                 client.run();
             } catch (IOException e) {
@@ -140,7 +141,9 @@ public class Client {
                 }
                 if (key.isWritable()) {
                     datagramChannel.register(selector, SelectionKey.OP_READ);
-                    String[] s = scanner.nextLine().split(" ");
+                    String[] s = null;
+                    if (scanner.hasNextLine()) s = scanner.nextLine().split(" ");
+                    else System.exit(1);
                     try {
                         sendCommand(s);
                     } catch (IndexOutOfBoundsException e) {
