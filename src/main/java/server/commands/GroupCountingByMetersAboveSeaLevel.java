@@ -37,7 +37,7 @@ public class GroupCountingByMetersAboveSeaLevel extends Command implements Seria
             Map<Object, List<City>> groups = priorityQueue.getCollection().stream().filter(city -> city.getMetersAboveSeaLevel() != null).collect(Collectors.groupingBy(City::getMetersAboveSeaLevel));
             groups.forEach((meters, cities) -> result.append("Группа ").append(meters).append(" (м):").append('\n').append(print(cities)).append('\n'));
         }
-        result.delete(result.length() - 1, result.length());
+        result.delete(result.length() - 2, result.length());
         return Serialization.serializeData(result.toString());
     }
 

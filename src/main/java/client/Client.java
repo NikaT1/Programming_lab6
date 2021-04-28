@@ -49,15 +49,17 @@ public class Client {
         Client client = new Client();
         boolean flag = true;
         client.inputAndOutput.output("Введите адрес сервера:");
+        int addr;
+        while (true){
+            try {
+                addr = Integer.parseInt(client.inputAndOutput.getScanner().nextLine());
+                break;
+            }catch (NumberFormatException e){
+                client.inputAndOutput.output("Неверный формат адреса, повторите ввод:");
+            }
+        }
         while (flag) {
             try {
-                int addr;
-                try {
-                    addr = Integer.parseInt(client.inputAndOutput.getScanner().nextLine());
-                }catch (NumberFormatException e){
-                    client.inputAndOutput.output("Неверный формат адреса, повторите ввод:");
-                    continue;
-                }
                 client.initialize();
                 client.connect("localhost", addr);
                 client.getInputAndOutput().output("Введите первую команду:");
@@ -115,8 +117,10 @@ public class Client {
             if (inputAndOutput.readAnswer("Хотите выйти без сохранения коллекции?")) System.exit(1);
             else inputAndOutput.output("Выход не выполнен");
         } else {
-            inputAndOutput.output("Ошибка сериализации команды; команда не выполнена");
-            datagramChannel.register(selector, SelectionKey.OP_WRITE);
+            if (outputForUser == null) {
+                inputAndOutput.output("Ошибка сериализации команды; команда не выполнена");
+                datagramChannel.register(selector, SelectionKey.OP_WRITE);
+            }
         }
     }
 

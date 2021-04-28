@@ -30,6 +30,7 @@ public class AddIfMax extends Command implements Serializable {
      */
     public byte[] doCommand(IOForClient ioForClient, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
         City city = this.getCity();
+        city.setId(priorityQueue.generateId());
         StringBuilder result = new StringBuilder();
         if (priorityQueue.getCollection().peek() != null) {
             if (city.getArea() > priorityQueue.getCollection().peek().getArea()) {

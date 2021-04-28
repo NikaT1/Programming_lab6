@@ -31,6 +31,7 @@ public class Help extends Command implements Serializable {
         for (Command command : commandsControl.getCommands().values()) {
             result.append(command.toString()).append('\n');
         }
+        result.delete(result.length() - 1, result.length());
         return Serialization.serializeData(result.toString());
     }
 }

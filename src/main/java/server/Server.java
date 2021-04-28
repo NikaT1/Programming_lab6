@@ -106,7 +106,7 @@ public class Server {
 
     public void execute() throws Exception {
         try {
-            datagramSocket.setSoTimeout(60000);
+            datagramSocket.setSoTimeout(600000);
             byte[] bytes = new byte[100000];
             log.log(Level.INFO, "Чтение команды");
             bytes = ioForClient.input(bytes);

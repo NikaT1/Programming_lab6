@@ -37,6 +37,7 @@ public class AddIfMin extends Command implements Serializable {
             dop.add(city1);
         }
         City city = this.getCity();
+        city.setId(priorityQueue.generateId());
         if (dop.peek() != null) {
             if (city.getArea() < dop.peek().getArea()) {
                 priorityQueue.addToCollection(city);
