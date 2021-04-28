@@ -17,7 +17,7 @@ import java.util.Scanner;
  * Класс для команды execute_script, которая считывает и исполняет скрипт из указанного файла.
  */
 
-public class ExecuteScript extends Command implements Serializable {
+public class ExecuteScript extends Command {
     /**
      * Поле, содержащее список файлов.
      */

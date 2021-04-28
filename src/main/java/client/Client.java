@@ -50,11 +50,11 @@ public class Client {
         boolean flag = true;
         client.inputAndOutput.output("Введите адрес сервера:");
         int addr;
-        while (true){
+        while (true) {
             try {
                 addr = Integer.parseInt(client.inputAndOutput.getScanner().nextLine());
                 break;
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 client.inputAndOutput.output("Неверный формат адреса, повторите ввод:");
             }
         }

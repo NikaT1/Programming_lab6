@@ -10,7 +10,7 @@ import java.io.Serializable;
  * Класс для команды print_ascending, которая выводит элементы коллекции в порядке возрастания.
  */
 
-public class PrintAscending extends Command implements Serializable {
+public class PrintAscending extends Command {
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
      */

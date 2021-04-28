@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * поля metersAboveSeaLevel и выводит количество элементов в каждой группе.
  */
 
-public class GroupCountingByMetersAboveSeaLevel extends Command implements Serializable {
+public class GroupCountingByMetersAboveSeaLevel extends Command {
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
      */

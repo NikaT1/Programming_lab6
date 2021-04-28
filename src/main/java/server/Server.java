@@ -26,6 +26,7 @@ public class Server {
     private final IOForClient ioForClient;
     private DatagramSocket datagramSocket;
     private final Logger log = Logger.getLogger(Server.class.getName());
+    private final int port = 1200;
 
     public Server() {
         log.log(Level.INFO, "Запуск сервера");
@@ -88,8 +89,8 @@ public class Server {
             System.exit(-1);
         }
         try {
-            new InetSocketAddress("localhost", 666);
-            datagramSocket = new DatagramSocket(666);
+            new InetSocketAddress("localhost", port);
+            datagramSocket = new DatagramSocket(port);
             ioForClient.setDatagramSocket(datagramSocket);
             while (true) {
                 this.execute();

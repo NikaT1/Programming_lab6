@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * Класс для команды remove_by_id, которая удаляет элемент из коллекции по его id.
  */
 
-public class RemoveById extends Command implements Serializable {
+public class RemoveById extends Command {
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
      */

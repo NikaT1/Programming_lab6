@@ -10,7 +10,7 @@ import java.io.Serializable;
  * Класс для команды clear, которая очищает коллекцию.
  */
 
-public class CommandClear extends Command implements Serializable {
+public class CommandClear extends Command {
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
      */

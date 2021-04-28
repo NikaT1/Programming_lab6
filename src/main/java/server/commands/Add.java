@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
  * Класс для команды add, которая добавляет новый элемент в коллекцию.
  */
 
-public class Add extends Command implements Serializable {
+public class Add extends Command {
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
      */
@@ -24,7 +24,7 @@ public class Add extends Command implements Serializable {
     /**
      * Метод, исполняющий команду.
      *
-     * @param ioForClient  объект, через который производится ввод/вывод.
+     * @param ioForClient     объект, через который производится ввод/вывод.
      * @param commandsControl объект, содержащий объекты доступных команд.
      * @param priorityQueue   хранимая коллекция.
      */

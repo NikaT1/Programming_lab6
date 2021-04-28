@@ -11,7 +11,7 @@ import java.io.Serializable;
  * Класс для команды help, которая выводит справку по доступным коммандам.
  */
 
-public class Help extends Command implements Serializable {
+public class Help extends Command {
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
      */

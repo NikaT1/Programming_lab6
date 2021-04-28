@@ -14,7 +14,7 @@ import java.util.PriorityQueue;
  * элемента этой коллекции.
  */
 
-public class AddIfMin extends Command implements Serializable {
+public class AddIfMin extends Command {
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
      */

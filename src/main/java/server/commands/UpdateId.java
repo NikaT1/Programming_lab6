@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * Класс для команды update, которая обновляет значение элемента коллекции по его id.
  */
 
-public class UpdateId extends Command implements Serializable {
+public class UpdateId extends Command {
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
      */

@@ -13,7 +13,7 @@ import java.util.PriorityQueue;
  * Класс для команды save, которая сохраняет в файл коллекцию.
  */
 
-public class CommandSave extends Command implements Serializable {
+public class CommandSave extends Command {
     /**
      * Поле, использующееся для временного хранения коллекции.
      */

@@ -22,7 +22,7 @@ public class UserInput {
     private String readName() {
         boolean flag = false;
         String name = null;
-        if (ioInterface.getPrintMessages()){
+        if (ioInterface.getPrintMessages()) {
             while (!flag) {
                 flag = true;
                 name = readField("Введите название города:");
@@ -56,10 +56,10 @@ public class UserInput {
      *
      * @return значение поля area.
      */
-    private int readArea() throws NumberFormatException{
+    private int readArea() throws NumberFormatException {
         boolean flag = false;
         int area = 1;
-        if (ioInterface.getPrintMessages()){
+        if (ioInterface.getPrintMessages()) {
             while (!flag) {
                 flag = true;
                 try {
@@ -85,10 +85,10 @@ public class UserInput {
      *
      * @return значение поля population.
      */
-    private long readPopulation() throws NumberFormatException{
+    private long readPopulation() throws NumberFormatException {
         boolean flag = false;
         long population = 1;
-        if (ioInterface.getPrintMessages()){
+        if (ioInterface.getPrintMessages()) {
             while (!flag) {
                 flag = true;
                 try {
@@ -114,10 +114,10 @@ public class UserInput {
      *
      * @return значение поля metersAboveSeaLevel.
      */
-    private Long readMetersAboveSeaLevel() throws NumberFormatException{
+    private Long readMetersAboveSeaLevel() throws NumberFormatException {
         boolean flag = false;
         Long metersAboveSeaLevel = null;
-        if (ioInterface.getPrintMessages()){
+        if (ioInterface.getPrintMessages()) {
             while (!flag) {
                 flag = true;
                 String s = readField("Введите количество метров над уровнем моря:");
@@ -150,7 +150,7 @@ public class UserInput {
         boolean flag = false;
         Date establishmentDate = null;
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        if (ioInterface.getPrintMessages()){
+        if (ioInterface.getPrintMessages()) {
             while (!flag) {
                 flag = true;
                 String s = readField("Введите дату создания (yyyy-MM-dd):");
@@ -179,7 +179,7 @@ public class UserInput {
      *
      * @return значение поля agglomeration.
      */
-    private Integer readAgglomeration() throws NumberFormatException{
+    private Integer readAgglomeration() throws NumberFormatException {
         boolean flag = false;
         Integer agglomeration = null;
         if (ioInterface.getPrintMessages()) {
@@ -211,7 +211,7 @@ public class UserInput {
      *
      * @return значение поля climate.
      */
-    private Climate readClimate() throws NumberFormatException{
+    private Climate readClimate() throws NumberFormatException {
         boolean flag = false;
         Climate climate = null;
         if (ioInterface.getPrintMessages()) {
@@ -233,7 +233,7 @@ public class UserInput {
      *
      * @return значение поля governor.
      */
-    private Human readGovernor() throws NumberFormatException{
+    private Human readGovernor() throws NumberFormatException {
         boolean flag = false;
         Integer age = null;
         if (ioInterface.getPrintMessages()) {

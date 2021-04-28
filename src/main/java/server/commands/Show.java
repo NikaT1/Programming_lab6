@@ -10,7 +10,7 @@ import java.io.Serializable;
  * Класс для команды show, которая выводит в стандартный поток вывода все элементы коллекции в строковом представлении.
  */
 
-public class Show extends Command implements Serializable {
+public class Show extends Command {
 
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.

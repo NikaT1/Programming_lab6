@@ -11,7 +11,7 @@ import java.io.Serializable;
  * Класс для команды exit, которая завершает программу без сохранения в файл коллекции.
  */
 
-public class CommandExit extends Command implements Serializable {
+public class CommandExit extends Command {
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
      */

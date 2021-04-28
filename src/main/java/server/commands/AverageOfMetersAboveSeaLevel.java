@@ -13,7 +13,7 @@ import java.io.Serializable;
  * для всех элементов коллекции.
  */
 
-public class AverageOfMetersAboveSeaLevel extends Command implements Serializable {
+public class AverageOfMetersAboveSeaLevel extends Command {
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
      */
