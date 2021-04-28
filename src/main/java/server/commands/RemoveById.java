@@ -34,7 +34,9 @@ public class RemoveById extends Command {
         StringBuilder result = new StringBuilder();
         try {
             int id = Integer.parseInt(this.getArgument());
-            List<City> cities = priorityQueue.getCollection().stream().filter(city -> city.getId() == id).collect(Collectors.toList());
+            List<City> cities = priorityQueue.getCollection().stream().
+                    filter(city -> city.getId() == id).
+                    collect(Collectors.toList());
             if (cities.size() > 0) {
                 result.append("удаление элемента успешно завершено");
                 priorityQueue.getCollection().remove(cities.get(0));

@@ -1,10 +1,11 @@
 package server.commands;
 
 import server.IOForClient;
-import sharedClasses.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
+import sharedClasses.City;
+import sharedClasses.Serialization;
 
-import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Класс для команды print_ascending, которая выводит элементы коллекции в порядке возрастания.
@@ -29,7 +30,9 @@ public class PrintAscending extends Command {
     public byte[] doCommand(IOForClient ioForClient, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
         StringBuilder result = new StringBuilder();
         if (priorityQueue.getCollection().isEmpty()) result.append("Коллекция пуста").append('\n');
-        else priorityQueue.getCollection().forEach(city -> result.append(city.toString()).append('\n'));
+        else priorityQueue.getCollection().stream().
+                sorted(Comparator.comparing(City::getName)).
+                forEach(city -> result.append(city.toString()).append('\n'));
         result.delete(result.length() - 1, result.length());
         return Serialization.serializeData(result.toString());
     }

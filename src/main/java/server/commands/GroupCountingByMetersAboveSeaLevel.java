@@ -35,7 +35,9 @@ public class GroupCountingByMetersAboveSeaLevel extends Command {
         StringBuilder result = new StringBuilder();
         if (priorityQueue.getCollection().isEmpty()) result.append("Коллекция пуста" + '\n');
         else {
-            Map<Object, List<City>> groups = priorityQueue.getCollection().stream().filter(city -> city.getMetersAboveSeaLevel() != null).collect(Collectors.groupingBy(City::getMetersAboveSeaLevel));
+            Map<Object, List<City>> groups = priorityQueue.getCollection().stream().
+                    filter(city -> city.getMetersAboveSeaLevel() != null).
+                    collect(Collectors.groupingBy(City::getMetersAboveSeaLevel));
             groups.forEach((meters, cities) -> result.append("Группа ").append(meters).append(" (м):").append('\n').append(print(cities)).append('\n'));
         }
         result.delete(result.length() - 2, result.length());

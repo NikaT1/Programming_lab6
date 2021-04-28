@@ -1,10 +1,12 @@
 package server.commands;
 
 import server.IOForClient;
+import sharedClasses.City;
 import sharedClasses.Serialization;
 import server.collectionUtils.PriorityQueueStorage;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Класс для команды show, которая выводит в стандартный поток вывода все элементы коллекции в строковом представлении.
@@ -30,7 +32,10 @@ public class Show extends Command {
     public byte[] doCommand(IOForClient ioForClient, CommandsControl commandsControl, PriorityQueueStorage priorityQueue) {
         StringBuilder result = new StringBuilder();
         if (priorityQueue.getCollection().isEmpty()) result.append("Коллекция пуста").append('\n');
-        else priorityQueue.getCollection().forEach(city -> result.append(city.toString()).append('\n'));
+        else
+            priorityQueue.getCollection().stream().
+                    sorted((city1, city2) -> city2.getName().compareTo(city1.getName())).
+                    forEach(city -> result.append(city.toString()).append('\n'));
         result.delete(result.length() - 1, result.length());
         return Serialization.serializeData(result.toString());
     }

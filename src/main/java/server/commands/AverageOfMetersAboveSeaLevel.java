@@ -34,7 +34,8 @@ public class AverageOfMetersAboveSeaLevel extends Command {
         if (priorityQueue.getCollection().isEmpty())
             result.append("Коллекция пуста; среднее значение поля metersAboveSeaLevel установить невозможно");
         else {
-            double answer = priorityQueue.getCollection().stream().filter(city -> city.getMetersAboveSeaLevel() != null)
+            double answer = priorityQueue.getCollection().stream().
+                    filter(city -> city.getMetersAboveSeaLevel() != null)
                     .mapToLong(City::getMetersAboveSeaLevel).average().getAsDouble();
             String numberResult = String.format("%.3f", answer);
             result.append("Среднее значение поля metersAboveSeaLevel для всех элементов коллекции: ").append(numberResult);

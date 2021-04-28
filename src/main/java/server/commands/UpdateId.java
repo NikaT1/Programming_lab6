@@ -34,7 +34,9 @@ public class UpdateId extends Command {
         StringBuilder result = new StringBuilder();
         try {
             int id = Integer.parseInt(getArgument());
-            List<City> cities = priorityQueue.getCollection().stream().filter(city -> city.getId() == id).collect(Collectors.toList());
+            List<City> cities = priorityQueue.getCollection().stream().
+                    filter(city -> city.getId() == id).
+                    collect(Collectors.toList());
             if (cities.size() > 0) {
                 priorityQueue.getCollection().remove(cities.get(0));
                 City city = getCity();
