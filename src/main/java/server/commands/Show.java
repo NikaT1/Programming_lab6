@@ -11,6 +11,7 @@ import java.io.Serializable;
  */
 
 public class Show extends Command {
+    private static final long serialVersionUID = 147364832874L;
 
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.

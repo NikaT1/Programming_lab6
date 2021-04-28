@@ -49,7 +49,7 @@ public class Server {
                 log.log(Level.SEVERE, "Вы не задали имя файла");
                 System.exit(-1);
             }
-            Pattern pattern = Pattern.compile("/dev/*");
+            Pattern pattern = Pattern.compile("/*/dev/*");
             File file = new File(args[0]);
             Matcher matcher = pattern.matcher(file.getAbsolutePath());
             if (matcher.find()) {

@@ -7,6 +7,7 @@ import java.util.HashMap;
  */
 
 public class CommandsControl {
+    private static final long serialVersionUID = 147364832874L;
     /**
      * Поле, использующееся для хранения объектов команд.
      */

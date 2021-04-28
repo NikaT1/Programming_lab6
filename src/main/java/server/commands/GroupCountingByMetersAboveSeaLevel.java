@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
  */
 
 public class GroupCountingByMetersAboveSeaLevel extends Command {
+    private static final long serialVersionUID = 147364832874L;
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
      */

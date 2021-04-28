@@ -14,6 +14,7 @@ import java.util.PriorityQueue;
  */
 
 public class CommandSave extends Command {
+    private static final long serialVersionUID = 147364832874L;
     /**
      * Поле, использующееся для временного хранения коллекции.
      */

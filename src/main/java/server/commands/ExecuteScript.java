@@ -18,6 +18,7 @@ import java.util.Scanner;
  */
 
 public class ExecuteScript extends Command {
+    private static final long serialVersionUID = 147364832874L;
     /**
      * Поле, содержащее список файлов.
      */

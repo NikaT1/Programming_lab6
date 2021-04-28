@@ -14,6 +14,7 @@ import java.util.NoSuchElementException;
  */
 
 public class Add extends Command {
+    private static final long serialVersionUID = 147364832874L;
     /**
      * Конструктор, присваивающий имя и дополнительную информацию о команде.
      */
