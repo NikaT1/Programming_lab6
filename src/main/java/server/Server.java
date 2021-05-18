@@ -3,6 +3,7 @@ package server;
 import server.collectionUtils.Parser;
 import server.collectionUtils.PriorityQueueStorage;
 import server.commands.Command;
+import server.commands.CommandSave;
 import server.commands.CommandsControl;
 import server.commands.ExecuteScript;
 import sharedClasses.Serialization;
@@ -25,6 +26,7 @@ public class Server {
     private PriorityQueueStorage priorityQueue;
     private final IOForClient ioForClient;
     private DatagramSocket datagramSocket;
+    private static final CommandSave save = new CommandSave();
     private final Logger log = Logger.getLogger(Server.class.getName());
     private final int port = 1200;
 
@@ -89,6 +91,13 @@ public class Server {
             System.exit(-1);
         }
         try {
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    save.doCommand(ioForClient, commandsControl, priorityQueue);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }));
             new InetSocketAddress("localhost", port);
             datagramSocket = new DatagramSocket(port);
             ioForClient.setDatagramSocket(datagramSocket);
@@ -123,7 +132,7 @@ public class Server {
             command.getPaths().clear();
             ioForClient.output("Неверный формат введенных данных");
         } catch (SocketTimeoutException e) {
-            commandsControl.getCommands().get("save").doCommand(ioForClient, commandsControl, priorityQueue);
+            save.doCommand(ioForClient, commandsControl, priorityQueue);
             log.log(Level.SEVERE, "Время ожидания истекло");
             System.exit(1);
         }

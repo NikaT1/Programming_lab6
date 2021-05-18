@@ -49,20 +49,24 @@ public class Client {
         Client client = new Client();
         boolean flag = true;
         client.inputAndOutput.output("Введите порт:");
-        int addr = 0;
+        int port = 0;
         while (true) {
             try {
-                if (client.inputAndOutput.getScanner().hasNextLine()) addr = Integer.parseInt(client.inputAndOutput.getScanner().nextLine());
+                if (client.inputAndOutput.getScanner().hasNextLine()) port = Integer.parseInt(client.inputAndOutput.getScanner().nextLine());
                 else System.exit(1);
+                if (port < 0 || port >65535) {
+                    client.inputAndOutput.output("Неверный формат порта, повторите ввод:");
+                    continue;
+                }
                 break;
-            } catch (NumberFormatException e) {
+            } catch (IllegalArgumentException e) {
                 client.inputAndOutput.output("Неверный формат порта, повторите ввод:");
             }
         }
         while (flag) {
             try {
                 client.initialize();
-                client.connect("localhost", addr);
+                client.connect("localhost", port);
                 client.getInputAndOutput().output("Введите команду:");
                 flag = false;
                 client.run();
@@ -73,8 +77,8 @@ public class Client {
         }
     }
 
-    private void connect(String host, int addr) throws IOException {
-        socketAddress = new InetSocketAddress(host, addr);
+    private void connect(String host, int port) throws IOException {
+        socketAddress = new InetSocketAddress(host, port);
         datagramChannel.connect(socketAddress);
     }
 
